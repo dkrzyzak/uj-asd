@@ -1,0 +1,69 @@
+Kolejka 
+
+FIFO - First In First Out
+
+1. bufor cykliczny
+push/enque wstawia obiekt do kolejki
+pop/deque usuwa pierwszy (najstarszy) wstawiony obiket
+
+T data[];
+int head = 0;   index najstarszego/pierwszego obiektu
+int tail = 0;   index komórki gdzie wstawimy kolejny/nowy obiekt
+int size = 0;   
+
+dodanie elementu zwiększa tail o 1
+usunięcie elementu zwiększa head o 1
+
+występuje cykliczność (chlop o to pyta)
+
+wstawianie do kolejki o długości N:
+tail++ 
+if (tail == N) 
+    tail = 0;
+
+albo
+
+tail = (tail + 1) % N
+dla N będącego potęgą 2 (& to AND logiczne/binarne)
+tail = (tail + 1) & (N - 1)
+
+_____________________
+
+jeśli kolejka jest pusta 
+size == 0 
+head == tail
+
+jeśli kolejka jest pełna
+size == N
+head == tail
+
+
+
+
+2. Implementacja wskaźnikowa
+
+potrzebny jest wskaźnik na najstarszy element
+Node* head;
+
+każdy element przechowuje wskaźnik na element stojący za nim w kolejce
+podczas pop() wskaźnik head jest przepinany na ten kolejny element
+
+i potrzebny jest wskaźnik na najnowszy element
+Node* tail;
+podczas push() wskaźnik tail jest przepinany na ten najnowszy element
+ 
+
+
+dla pustej kolejki head i tail mają wartość NULL
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+implementacja tablicowa listy
+
+trzymamy capacity
+
+push_front() - musimy przekopiować wszystkie elementy o 1 w prawo
+
+
+implementacja kursorowa
+
+Node[]
+
+Node {
+    T x;
+    int next; // index następnego elementu
+}
+
+musimy pamiętać które komórki są wolne
+
+int spare - index pierwszego węzła w liście wolnych węzłów
+
+Node data[];
+data[i].next = int;
+
+-(index + 1) = ~index
+

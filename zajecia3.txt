@@ -1,0 +1,42 @@
+Lista z dowiązaniami
+
+Elementy mogą się powtarzać
+Ułożone są w porządku liniowym
+Możemy wstawić element w dowolnym miejscu
+
+struct Node {
+    T value = x;
+    struct Node* next || NULL (skrajnie prawy);
+    struct Node* prev || NULL (skrajnie lewy);
+}
+
+push(x)
+new Node {value = x}
+
+iteratory
+*it = x;
+it++ zwraca wartość kolejnego elementu
+it-- zwraca wartość poprzedniego elementu
+
+struct Iterator {
+    Node *ptr;
+    operator *() {
+        return ptr = *x;
+        
+    }
+
+    operator ++() {
+        ptr = ptr->next;
+    }
+
+    operator --() {
+        ptr = ptr->prev;
+    }
+}
+
+
+Node guard - next wskazuje na siebie, prev wskazuje na siebie, dodając kolejny element możemy go dopiąć do next albo prev
+wyjątek rzucamy tylko jeśli lista jest pusta
+
+powinniśmy trzymać rozmiar listy, żeby nie musieć skakać po wszystkich węzłach żeby je zliczyć
+pole private w class List {}

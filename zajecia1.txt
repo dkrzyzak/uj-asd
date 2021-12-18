@@ -1,0 +1,103 @@
+typ danych - atrybut danych, który informje kompilator jak je używać
+
+abstrakcyjny typ danych (ADT) - matematyczny model typu danych opisujący jego właściwości i operacje na nim, a nie jego implementację
+- stos
+- kolejka
+- lista
+- drzewa
+
+
+struktura danych - implementacja ADT
+- rekord (struktura)
+- tablicę
+- listę wiązaną
+- stos
+- kolejkę
+- graf
+- drzewo
+- kopiec
+
+
+
+
+
+_______________________
+STOS (LIFO = last in first out)
+
+s = stack()
+s.push(a) - dodanie do stosu
+s.pop() - usunięcie ze stosu
+
+
+
+implementacja
+
+push(x)
+    data[top++] = x;
+
+pop()
+    return data[--top]
+
+
+generator przyjmuje liczbę operacji jako argument wywołania
+
+
+
+
+uważać na nazwy plików, wykonywalne mają byc .x
+
+A 123 -> push(123)
+D   ->    pop() + wypisane
+S ->    size()
+
+
+3
+A 1
+D
+S
+
+
+
+
+ONP
+(1 + 2) * (3 + 4) -> 1 2 + 3 4 + *
+
+
+proces
+
+|stack         
+|
+|heap
+|bss - dane niezainicjalizowane
+|data - dane zainicjalizowane
+|text - code
+
+
+stos procesu rośnie w dół
+
+
+
+
+zad 1
+
+np
+
+6
+A 12
+D
+S
+D
+A 34
+D 
+
+zwraca
+
+12
+0
+EMPTY
+34
+
+
+
+
+
