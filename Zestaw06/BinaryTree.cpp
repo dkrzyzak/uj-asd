@@ -14,9 +14,9 @@ int main(int argc, char const *argv[]) {
         bt.insert(x);
     }
 
-    cout << bt.size() << " " << bt.depth(bt.getRoot()) << " " << bt.minimum() << " " << bt.maximum() << endl;
+    cout << bt.size() << " " << bt.depth() << " " << bt.minimum() << " " << bt.maximum() << endl;
 
-    bt.preorder(bt.getRoot());
+    bt.preorder();
 
     for (int number = 1; number < 10; number++) {
         // cout << ((bt.searchRecursive(number, bt.getRoot()) == nullptr) ? "No" : "Yes") << endl;

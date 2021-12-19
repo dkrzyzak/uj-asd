@@ -17,6 +17,64 @@ class BinaryTree {
     Node* root = nullptr;
     int nodesCount = 0;
 
+    // INTERNAL METHODS
+
+    Node* _searchRecursive(int x, Node* node) {
+        if (node == nullptr || node->key == x) {
+            return node;
+        }
+
+        if (x < node->key) {
+            return _searchRecursive(x, node->left);
+        }
+
+        return _searchRecursive(x, node->right);
+    }
+
+    int _depth(Node* node) {
+        if (node == nullptr) {
+            return 0;
+        }
+
+        int lDepth = _depth(node->left);
+        int rDepth = _depth(node->right);
+
+        if (lDepth > rDepth) {
+            return lDepth + 1;
+        }
+
+        return rDepth + 1;
+    }
+
+    void _inorder(Node* node) {
+        if (node == nullptr) {
+            return;
+        }
+
+        _inorder(node->left);
+        cout << node->key << endl;
+        _inorder(node->right);
+    }
+
+    void _preorder(Node* node) {
+        if (node == nullptr) {
+            return;
+        }
+
+        cout << node->key << endl;
+        _preorder(node->left);
+        _preorder(node->right);
+    }
+    void _postorder(Node* node) {
+        if (node == nullptr) {
+            return;
+        }
+
+        _postorder(node->left);
+        _postorder(node->right);
+        cout << node->key << endl;
+    }
+
 
     public:
     BinaryTree() {}
@@ -67,16 +125,8 @@ class BinaryTree {
         return temp;
     }
 
-    Node* searchRecursive(int x, Node* node) {
-        if (node == nullptr || node->key == x) {
-            return node;
-        }
-
-        if (x < node->key) {
-            return searchRecursive(x, node->left);
-        }
-
-        return searchRecursive(x, node->right);
+    Node* searchRecursive(int x) {
+        return _searchRecursive(x, root);
     }
 
     int size() {
@@ -107,52 +157,19 @@ class BinaryTree {
         return prev->key;
     }
 
-    int depth(Node* node) {
-        if (node == nullptr) {
-            return 0;
-        }
-
-        int lDepth = depth(node->left);
-        int rDepth = depth(node->right);
-
-        if (lDepth > rDepth) {
-            return lDepth + 1;
-        }
-
-        return rDepth + 1;
+    int depth() {
+        return _depth(root);
     }
 
-    void inorder(Node* node) {
-        if (node == nullptr) {
-            return;
-        }
-
-        inorder(node->left);
-        cout << node->key << endl;
-        inorder(node->right);
+    void inorder() {
+        return _inorder(root);
     }
 
-    void preorder(Node* node) {
-        if (node == nullptr) {
-            return;
-        }
-
-        cout << node->key << endl;
-        preorder(node->left);
-        preorder(node->right);
+    void preorder() {
+        return _preorder(root);
     }
-    void postorder(Node* node) {
-        if (node == nullptr) {
-            return;
-        }
-
-        postorder(node->left);
-        postorder(node->right);
-        cout << node->key << endl;
-    }
-
-    Node* getRoot() {
-        return root;
+    void postorder() {
+        return _postorder(root);
     }
 };
 
