@@ -13,21 +13,15 @@ class List {
 private:
     struct Node {
         int x;
-        Node *prev;
-        Node *next;
+        Node *prev = nullptr;
+        Node *next = nullptr;
+
+        Node(): x(0) {};
+        Node(int x): x(x) {};
     };
 
     Node guard;
     unsigned int listSize;
-
-    Node* createNode(int x) {
-        Node* newNode = (Node*)malloc(sizeof(Node));
-        newNode->x = x;
-        newNode->next = NULL;
-        newNode->prev = NULL;
-
-        return newNode;
-    }
 
 public:
     List() {
@@ -43,7 +37,7 @@ public:
             throw out_of_range("FULL");
         }
 
-        Node* newNode = createNode(x);
+        auto newNode = new Node(x);
 
         // pusta lista
         if (guard.next == NULL) {
@@ -81,7 +75,7 @@ public:
             // więcej elementow na liście
             Node* nodeToRemove = guard.next;
             guard.next = guard.next->next;
-            free(nodeToRemove);
+            delete nodeToRemove;
         }
 
         listSize--;
@@ -95,7 +89,7 @@ public:
             throw out_of_range("FULL");
         }
 
-        Node* newNode = createNode(x);
+        auto newNode = new Node(x);
 
         // pusta lista
         if (guard.prev == NULL) {
@@ -135,7 +129,7 @@ public:
             // więcej elementow na liście
             Node* nodeToRemove = guard.prev;
             guard.prev = guard.prev->prev;
-            free(nodeToRemove);
+            delete nodeToRemove;
         }
 
         listSize--;
@@ -158,7 +152,7 @@ public:
 
         for (int i = 0; i < listSize; i++) {
             el = el->next;
-            free(el->prev);
+            delete el->prev;
         }
 
         guard.next = NULL;
@@ -201,7 +195,7 @@ public:
         int value = el->x;
         el->prev->next = el->next;
         el->next->prev = el->prev;
-        free(el);
+        delete el;
         listSize--;
 
         return value;
@@ -218,7 +212,7 @@ public:
             }
         }
 
-        Node* newNode = createNode(x);
+        auto newNode = new Node(x);
 
         newNode->prev = el->prev;
         el->prev->next = newNode;
