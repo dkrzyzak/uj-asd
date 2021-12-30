@@ -14,8 +14,26 @@ class Dict {
     hash<K> hasher;
     V fallbackValue;
 
-    int hashFunction(const K& key) {
-        return hasher(key) % hashGroups;
+    int hashFunction(const K& key, int hashTableSize = hashGroups) {
+        return hasher(key) % hashTableSize;
+    }
+
+    void resize() {
+        list<Pair> oldData[hashGroups];
+        copy(begin(table), end(table), begin(oldData));
+
+        int newHashGroupSize = hashGroups * 2;
+        table = new list<Pair>[newHashGroupSize];
+
+        for (int i = 0; i < hashGroups; i++) {
+            auto& cell = oldData[i];
+
+            for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
+                int index = hashFunction(bIterator->first, newHashGroupSize);
+                table[index].emplace_back(bIterator->first, bIterator->second);
+            }
+        }
+    
     }
 
     public:
@@ -30,8 +48,12 @@ class Dict {
 
     // Czyści słownik
     void clear() {
-
-    }; 
+        for (int i = 0; i < hashGroups; i++) {
+            list<Pair> cell = table[i];
+            cell.clear();
+        }
+    
+    };
 
     // Dodaje parę klucz-wartość do słownika
     bool insert(const Pair& p) {
@@ -50,6 +72,12 @@ class Dict {
         if (!keyExists) {
             cell.emplace_back(p.first, p.second);
         }
+
+        // double loadFactor = (double)size() / (double)hashGroups;
+        // cout << "load factor: " << loadFactor << endl;
+        // if (loadFactor > 0.75) {
+        //     resize();
+        // }
 
         return keyExists;
     }; 
@@ -70,20 +98,16 @@ class Dict {
 
     // Zwraca wartość dla klucza
     V& operator[](const K& k) {
-        if (!find(k)) {
-            Pair p(k, nullptr);
-            insert(p);
-        }
-
         int hashValue = hashFunction(k);
         auto& cell = table[hashValue];
-        
+      
         for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
             if (bIterator->first == k) {
                 return bIterator->second;
             }
         }
-
+        
+        cell.emplace_back(k, nullptr);
         return fallbackValue;
     }
 
