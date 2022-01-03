@@ -1,7 +1,10 @@
+#ifndef DICTIONARY
+#define DICTIONARY
+
 #include <iostream>
 #include <list>
 #include <cstring>
-#include <unordered_map>
+#include <unordered_map> // żeby uzyskać funkcję hashującą
 
 using namespace std;
 
@@ -9,7 +12,7 @@ template<class K, class V>
 class Dict {
     using Pair = pair<K, V>;
     private:
-    const static int hashGroups = 100;
+    const static int hashGroups = 5000;
     list<Pair> table[hashGroups];
     hash<K> hasher;
     V fallbackValue;
@@ -147,3 +150,5 @@ class Dict {
         
     }
 };
+
+#endif

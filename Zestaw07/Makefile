@@ -17,7 +17,7 @@ DIR = Zestaw07
 all: Dict.x Test.x
 
 run: Dict.x
-	./Dict.x pairs.txt < input.txt > output.txt;
+	./Dict.x pairs.txt < input.txt > output.txt
 	diff -s output.txt result.txt
 
 
