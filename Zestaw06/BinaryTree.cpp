@@ -19,7 +19,6 @@ int main(int argc, char const *argv[]) {
     bt.preorder();
 
     for (int number = 1; number < 10; number++) {
-        // cout << ((bt.searchRecursive(number, bt.getRoot()) == nullptr) ? "No" : "Yes") << endl;
         cout << ((bt.search(number) == nullptr) ? "No" : "Yes") << endl;
     }
     
