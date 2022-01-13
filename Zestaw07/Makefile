@@ -14,7 +14,7 @@ DIR = Zestaw07
 %.o: %.cpp Dict.hpp
 	$(CO) $(CFLAGS) -c $<
 
-all: Dict.x Test.x
+all: Dict.x
 
 run: Dict.x
 	./Dict.x pairs.txt < input.txt > output.txt

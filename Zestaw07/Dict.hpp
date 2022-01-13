@@ -12,31 +12,12 @@ template<class K, class V>
 class Dict {
     using Pair = pair<K, V>;
     private:
-    const static int hashGroups = 5000;
+    const static int hashGroups = 1000;
     list<Pair> table[hashGroups];
     hash<K> hasher;
-    V fallbackValue;
 
     int hashFunction(const K& key, int hashTableSize = hashGroups) {
         return hasher(key) % hashTableSize;
-    }
-
-    void resize() {
-        list<Pair> oldData[hashGroups];
-        copy(begin(table), end(table), begin(oldData));
-
-        int newHashGroupSize = hashGroups * 2;
-        table = new list<Pair>[newHashGroupSize];
-
-        for (int i = 0; i < hashGroups; i++) {
-            auto& cell = oldData[i];
-
-            for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
-                int index = hashFunction(bIterator->first, newHashGroupSize);
-                table[index].emplace_back(bIterator->first, bIterator->second);
-            }
-        }
-    
     }
 
     public:
@@ -52,7 +33,7 @@ class Dict {
     // Czyści słownik
     void clear() {
         for (int i = 0; i < hashGroups; i++) {
-            list<Pair> cell = table[i];
+            list<Pair>& cell = table[i];
             cell.clear();
         }
     
@@ -61,7 +42,7 @@ class Dict {
     // Dodaje parę klucz-wartość do słownika
     bool insert(const Pair& p) {
         int hashValue = hashFunction(p.first);
-        auto& cell = table[hashValue];
+        list<Pair>& cell = table[hashValue];
         
         bool keyExists = false;
         for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
@@ -88,7 +69,7 @@ class Dict {
     // Sprawdza czy słownik zawiera klucz
     bool find(const K& k) {
         int hashValue = hashFunction(k);
-        auto& cell = table[hashValue];
+        list<Pair>& cell = table[hashValue];
       
         for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
             if (bIterator->first == k) {
@@ -102,7 +83,7 @@ class Dict {
     // Zwraca wartość dla klucza
     V& operator[](const K& k) {
         int hashValue = hashFunction(k);
-        auto& cell = table[hashValue];
+        list<Pair>& cell = table[hashValue];
       
         for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
             if (bIterator->first == k) {
@@ -110,8 +91,8 @@ class Dict {
             }
         }
         
-        cell.emplace_back(k, nullptr);
-        return fallbackValue;
+        cell.emplace_back(k, V());
+        return cell.back().second;
     }
 
     // Usuwa parę od danym kluczu
@@ -122,7 +103,7 @@ class Dict {
         for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
             if (bIterator->first == k) {
                 bIterator = cell.erase(bIterator);
-                cout << "Pair removed" << endl;
+                // cout << "Pair removed" << endl;
                 return true;
             }
         }
@@ -147,7 +128,18 @@ class Dict {
 
     // Wypisuje informację o słowniku (patrz poniżej)
     void buckets() {
-        
+        cout << "# " << size() << " " << hashGroups;
+
+        int smallestTableSize = 0;
+        int biggestTableSize = 0;
+        for (int i = 0; i < hashGroups; i++) {
+            int size = table[i].size();
+
+            if (size > biggestTableSize) biggestTableSize = size;
+            if (size < smallestTableSize) smallestTableSize = size;
+        }
+
+        cout << " " << smallestTableSize << " " << biggestTableSize << endl;
     }
 };
 

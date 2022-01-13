@@ -15,11 +15,17 @@ int main(int argc, char const *argv[]) {
     
     d.insert(pr2);
     d.insert(pr3);
+
+    d["wywalone"] = "hahaha";
+    cout << d["wywalone"] << endl;
     
     cout << (d.insert(pr1) ? "element istnieje" : "element nie istnieje") << endl;
     cout << (d.insert(pr1) ? "element istnieje" : "element nie istnieje") << endl;
     cout << (d.find("sram") ? "znaleziono" : "nie znaleziono") << endl;
     cout << d.erase("sram") << endl;
     cout << d.find("sram") << endl;
+    cout << d["gunwo"] << endl;
+
+    d.buckets();
     return 0;
 }
