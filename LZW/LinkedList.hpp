@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -234,12 +235,15 @@ public:
         return xCount;
     }
 
-    void print() {
+    string print() {
+        stringstream ss;
         Node* el = guard.next;
         for (int i = 0; i < listSize; i++) {
-            cout << el->x << endl;
+            ss << el->x << endl;
             el = el->next;
         }
+
+        return ss.str();
     }
 };
 

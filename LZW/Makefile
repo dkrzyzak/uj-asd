@@ -20,7 +20,7 @@ run: LZW.x
 	./LZW.x
 
 clean:
-	rm -f *.x *.out *.o
+	rm -f *.x *.out *.o *.lzw
 
 tar: clean
 	cd ../; tar -cvzf Daniel_Krzyzak_$(DIR).tar.gz $(DIR)

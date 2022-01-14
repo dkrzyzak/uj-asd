@@ -2,6 +2,9 @@
 #define LZWCOMPRESSION
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "Dict.hpp"
 #include "LinkedList.hpp"
 
@@ -30,7 +33,43 @@ class LZWCompression {
         }
     }
 
+    static void saveToFile(string decompressed) {
+        ofstream outputStream("decompressed.lzw");
+        outputStream << decompressed;
+
+        outputStream.close();
+    }
+
+    static void saveToFile(List& compressedList) {
+        ofstream outputStream("compressed.lzw");
+        outputStream << compressedList.print();
+
+        outputStream.close();
+    }
+
     public:
+
+    static void compressFromFile(string fileName) {
+        ifstream nameFileout(fileName, ifstream::in);
+        stringstream buffer;
+
+        buffer << nameFileout.rdbuf();
+        string fileContent = buffer.str();
+
+        compress(fileContent);
+    }
+
+    static void decompressFromFile(string fileName) {
+        ifstream nameFileout(fileName, ifstream::in);
+
+        List compressed = List();
+        string line;
+        while (getline(nameFileout, line)) {
+            compressed.push_back(stoi(line));
+        }
+
+        decompress(compressed);
+    }
 
     static void compress(string input) {
         auto dict = CompressDict();
@@ -63,7 +102,7 @@ class LZWCompression {
 
         output.print();
 
-        LZWCompression::decompress(output);
+        saveToFile(output);
     };
 
     static void decompress(List compressed) {
@@ -96,6 +135,7 @@ class LZWCompression {
         }
 
         cout << "Decompressed: " << output << endl;
+        saveToFile(output);
     };
 };
 
