@@ -33,15 +33,15 @@ class LZWCompression {
         }
     }
 
-    static void saveToFile(string decompressed) {
-        ofstream outputStream("decompressed.lzw");
+    static void saveToFile(string decompressed, string destinationFileName) {
+        ofstream outputStream(destinationFileName);
         outputStream << decompressed;
 
         outputStream.close();
     }
 
-    static void saveToFile(List& compressedList) {
-        ofstream outputStream("compressed.lzw");
+    static void saveToFile(List& compressedList, string destinationFileName) {
+        ofstream outputStream(destinationFileName);
         outputStream << compressedList.print();
 
         outputStream.close();
@@ -49,18 +49,19 @@ class LZWCompression {
 
     public:
 
-    static void compressFromFile(string fileName) {
-        ifstream nameFileout(fileName, ifstream::in);
+    static void compressFromFile(string sourceFileName, string destinationFileName) {
+        ifstream nameFileout(sourceFileName, ifstream::in);
         stringstream buffer;
 
         buffer << nameFileout.rdbuf();
         string fileContent = buffer.str();
 
-        compress(fileContent);
+        List compressedList = compress(fileContent);
+        saveToFile(compressedList, destinationFileName);
     }
 
-    static void decompressFromFile(string fileName) {
-        ifstream nameFileout(fileName, ifstream::in);
+    static void decompressFromFile(string sourceFileName, string destinationFileName) {
+        ifstream nameFileout(sourceFileName, ifstream::in);
 
         List compressed = List();
         string line;
@@ -68,10 +69,11 @@ class LZWCompression {
             compressed.push_back(stoi(line));
         }
 
-        decompress(compressed);
+        string decompressedOutput = decompress(compressed);
+        saveToFile(decompressedOutput, destinationFileName);
     }
 
-    static void compress(string input) {
+    static List compress(string input) {
         auto dict = CompressDict();
         fillDictWithAsciiChars(&dict);
 
@@ -100,12 +102,10 @@ class LZWCompression {
 
         output.push_back(dict[current]);
 
-        output.print();
-
-        saveToFile(output);
+        return output;
     };
 
-    static void decompress(List compressed) {
+    static string decompress(List compressed) {
         auto dict = DecompressDict();
         fillDictWithAsciiChars(&dict);
 
@@ -134,8 +134,7 @@ class LZWCompression {
             old = n;
         }
 
-        cout << "Decompressed: " << output << endl;
-        saveToFile(output);
+        return output;
     };
 };
 

@@ -20,6 +20,7 @@
         "limits": "cpp",
         "sstream": "cpp",
         "type_traits": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "filesystem": "cpp"
     }
 }

@@ -17,7 +17,13 @@ DIR = Zestaw07
 all: LZW.x
 
 run: LZW.x
-	./LZW.x
+	./LZW.x test.txt c compressed
+	./LZW.x compressed d decompressed
+	diff -s test.txt decompressed
+	ls -lh
+
+cleanup:
+	rm compressed decompressed
 
 clean:
 	rm -f *.x *.out *.o *.lzw
