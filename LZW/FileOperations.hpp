@@ -10,6 +10,7 @@ using namespace std;
 
 class File {
     private:
+    // zapisz zdekompresowany ciąg znaków do pliku wyjściowego
     static void saveToFile(string decompressed, string destinationFileName) {
         ofstream outputStream(destinationFileName);
         outputStream << decompressed;
@@ -17,6 +18,7 @@ class File {
         outputStream.close();
     }
 
+    // zapisz skompresowany ciąg liczb do pliku tekstowego
     static void saveToFile(List& compressedList, string destinationFileName) {
         ofstream outputStream(destinationFileName);
         outputStream << compressedList.print();
@@ -24,6 +26,7 @@ class File {
         outputStream.close();
     }
 
+    // zapisz skompresowany ciąg liczb do pliku binarnego
     static void saveToFile(List& compressedList, string destinationFileName, int bufferSizeInBytes) {
         ofstream outputStream(destinationFileName, ios::out | ios::binary);
         
@@ -39,7 +42,7 @@ class File {
     }
 
     public:
-
+    /* skompresuj dane z pliku źrodłowego do pliku binarnego */
     static void compressFromFile(string sourceFileName, string destinationFileName, int bufferSizeInBytes) {
         ifstream nameFileout(sourceFileName, ifstream::in);
         stringstream buffer;
@@ -49,11 +52,21 @@ class File {
 
         List compressedList = LZWCompression::compress(fileContent);
         saveToFile(compressedList, destinationFileName, bufferSizeInBytes);
-
-        // odkomentuj żeby zapisać jako tekst
-        // saveToFile(compressedList, destinationFileName);
     }
 
+    /* skompresuj dane z pliku źrodłowego do pliku tekstowego */
+    static void compressFromFile(string sourceFileName, string destinationFileName) {
+        ifstream nameFileout(sourceFileName, ifstream::in);
+        stringstream buffer;
+
+        buffer << nameFileout.rdbuf();
+        string fileContent = buffer.str();
+
+        List compressedList = LZWCompression::compress(fileContent);
+        saveToFile(compressedList, destinationFileName);
+    }
+
+    /* zdekompresuj dane z pliku binarnego do pliku wyjściowego */
     static void decompressFromFile(string sourceFileName, string destinationFileName, int bufferSizeInBytes) {
         ifstream nameFileout(sourceFileName, ios::in | ios::binary);
 
@@ -74,6 +87,7 @@ class File {
         saveToFile(decompressedOutput, destinationFileName);
     }
 
+    /* zdekompresuj dane z pliku tekstowego do pliku wyjściowego */
     static void decompressFromFile(string sourceFileName, string destinationFileName) {
         ifstream nameFileout(sourceFileName, ifstream::in);
 

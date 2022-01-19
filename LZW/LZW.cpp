@@ -11,9 +11,9 @@ string instructions = R"(Program do kompresji LZW.
 
 Nie podając żadnych argumentów, zostaniesz preprowadzony przez proces krok po kroku.
 
-Możesz też od razu podać argumenty - będą wymagane 3, w następującej kolejności:
+Możesz też od razu podać argumenty - będą wymagane 4, w następującej kolejności:
 - nazwa pliku źródłowego
-- tryb kompresji (c jak kompresja / d jak dekompresja)
+- tryb algorytmu (c jak kompresja / d jak dekompresja)
 - nazwa pliku wyjściowego
 - rozmiar bufora w bitach (ilość bitów wykorzystywanych do zapisu jednej liczby)
 
@@ -82,7 +82,7 @@ int runWithArgs(char const *argv[]) {
 
     if (mode == 'c') {
         File::compressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
-    } 
+    }
 
     if (mode == 'd') {
         File::decompressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
