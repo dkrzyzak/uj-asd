@@ -35,14 +35,14 @@ class LZWCompression {
 
     public:
 
-    static List compress(string input) {
+    static List<int> compress(string input) {
         auto dict = CompressDict();
         fillDictWithAsciiChars(&dict);
 
         string current = string(1, input[0]);
         string next = "";
         unsigned int code = 256;
-        List output = List();
+        List<int> output = List<int>();
 
         int inputLength = input.length();
         for (int i = 0; i < inputLength; i++) {
@@ -67,7 +67,7 @@ class LZWCompression {
         return output;
     };
 
-    static string decompress(List compressed) {
+    static string decompress(List<int> compressed) {
         auto dict = DecompressDict();
         fillDictWithAsciiChars(&dict);
 

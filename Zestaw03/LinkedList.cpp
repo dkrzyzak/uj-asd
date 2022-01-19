@@ -7,7 +7,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-    List linkedList = List();
+    List<int> linkedList = List<int>();
 
     string operation;
     while (getline(cin, operation)) {

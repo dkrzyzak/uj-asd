@@ -4,20 +4,20 @@
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
-
-#define MAX_LIST_SIZE 1000
+#include <sstream>
 
 using namespace std;
 
+template<class T>
 class List {
 private:
     struct Node {
-        int x;
+        T x;
         Node *prev = nullptr;
         Node *next = nullptr;
 
-        Node(): x(0) {};
-        Node(int x): x(x) {};
+        Node(): x() {};
+        Node(T x): x(x) {};
     };
 
     Node guard;
@@ -31,12 +31,7 @@ public:
     }
 
     // Dołacza element na początek listy
-    void push_front(int x) {
-        // przepełniona lista
-        if (listSize == MAX_LIST_SIZE) {
-            throw out_of_range("FULL");
-        }
-
+    void push_front(T x) {
         auto newNode = new Node(x);
 
         // pusta lista
@@ -58,13 +53,13 @@ public:
     }
 
     // Usuwa i zwraca element z początku listy
-    int pop_front() {
+    T pop_front() {
         // pusta lista 
         if (guard.next == NULL) {
             throw out_of_range("EMPTY");
         }
 
-        int x = guard.next->x;
+        T x = guard.next->x;
 
         // jeden element na liście
         if (guard.next == guard.prev) {
@@ -83,12 +78,7 @@ public:
     }
 
     // Dołacza element na koniec listy
-    void push_back(int x) {
-        // przepełniona lista
-        if (listSize == MAX_LIST_SIZE) {
-            throw out_of_range("FULL");
-        }
-
+    void push_back(T x) {
         auto newNode = new Node(x);
 
         // pusta lista
@@ -112,13 +102,13 @@ public:
     }
 
     // Usuwa i zwraca element z końca listy
-    int pop_back() {
+    T pop_back() {
         // pusta lista 
         if (empty()) {
             throw out_of_range("EMPTY");
         }
 
-        int x = *(&(guard.prev)->x);
+        T x = guard.prev->x;
 
         // jeden element na liście
         if (guard.next == guard.prev) {
@@ -134,6 +124,18 @@ public:
 
         listSize--;
         return x;
+    }
+
+    T operator[](const int index) {
+        int i = 0;
+
+        Node* el = guard.next;
+        while (i != index) {
+            el = el->next;
+            i++;
+        }
+
+        return el->x;
     }
 
     // Zwraca liczbę elementów w liscie
@@ -160,7 +162,7 @@ public:
     }
 
     // Zwraca pozycje pierwszego elementu o wartości x
-    int find(int x) {
+    int find(T x) {
         if (empty()) {
             return -1;
         }
@@ -178,7 +180,7 @@ public:
     }
 
     // Usuwa i zwraca element na pozycji i
-    int erase(int i) {
+    T erase(int i) {
         if (i >= listSize) {
             throw out_of_range("Lista nie ma tylu elementow");
         }
@@ -192,7 +194,7 @@ public:
             }
         }
 
-        int value = el->x;
+        T value = el->x;
         el->prev->next = el->next;
         el->next->prev = el->prev;
         delete el;
@@ -202,7 +204,7 @@ public:
     }
 
     // Wstawia element x przed pozycje i
-    void insert(int i, int x) {
+    void insert(int i, T x) {
         Node* el;
         for (int index = 0; index <= i; index++) {
             if (index == 0) {
@@ -223,7 +225,7 @@ public:
     }
 
     // Usuwa wystąpienia x i zwraca ich liczbę
-    int remove(int x) {
+    int remove(T x) {
         int xCount = 0;
         int index;
         while ((index = find(x)) != -1) {
@@ -232,6 +234,17 @@ public:
         }
 
         return xCount;
+    }
+
+    string print() {
+        stringstream ss;
+        Node* el = guard.next;
+        for (int i = 0; i < listSize; i++) {
+            ss << el->x << endl;
+            el = el->next;
+        }
+
+        return ss.str();
     }
 };
 

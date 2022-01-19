@@ -128,18 +128,26 @@ class Dict {
 
     // Wypisuje informację o słowniku (patrz poniżej)
     void buckets() {
-        cout << "# " << size() << " " << hashGroups;
+        cout << "# " << size() << " ";
 
         int smallestTableSize = 0;
         int biggestTableSize = 0;
+        int classesCount = 0;
+
         for (int i = 0; i < hashGroups; i++) {
             int size = table[i].size();
 
-            if (size > biggestTableSize) biggestTableSize = size;
-            if (size < smallestTableSize) smallestTableSize = size;
+            if (size > 0) {
+                classesCount++;
+
+                if (size > biggestTableSize) biggestTableSize = size;
+                if (size < smallestTableSize) smallestTableSize = size;
+            }
+
+            
         }
 
-        cout << " " << smallestTableSize << " " << biggestTableSize << endl;
+        cout << classesCount << " " << smallestTableSize << " " << biggestTableSize << endl;
     }
 };
 

@@ -19,7 +19,7 @@ class File {
     }
 
     // zapisz skompresowany ciąg liczb do pliku tekstowego
-    static void saveToFile(List& compressedList, string destinationFileName) {
+    static void saveToFile(List<int>& compressedList, string destinationFileName) {
         ofstream outputStream(destinationFileName);
         outputStream << compressedList.print();
 
@@ -27,7 +27,7 @@ class File {
     }
 
     // zapisz skompresowany ciąg liczb do pliku binarnego
-    static void saveToFile(List& compressedList, string destinationFileName, int bufferSizeInBytes) {
+    static void saveToFile(List<int>& compressedList, string destinationFileName, int bufferSizeInBytes) {
         ofstream outputStream(destinationFileName, ios::out | ios::binary);
         
         int value;
@@ -50,7 +50,7 @@ class File {
         buffer << nameFileout.rdbuf();
         string fileContent = buffer.str();
 
-        List compressedList = LZWCompression::compress(fileContent);
+        List<int> compressedList = LZWCompression::compress(fileContent);
         saveToFile(compressedList, destinationFileName, bufferSizeInBytes);
     }
 
@@ -62,7 +62,7 @@ class File {
         buffer << nameFileout.rdbuf();
         string fileContent = buffer.str();
 
-        List compressedList = LZWCompression::compress(fileContent);
+        List<int> compressedList = LZWCompression::compress(fileContent);
         saveToFile(compressedList, destinationFileName);
     }
 
@@ -70,7 +70,7 @@ class File {
     static void decompressFromFile(string sourceFileName, string destinationFileName, int bufferSizeInBytes) {
         ifstream nameFileout(sourceFileName, ios::in | ios::binary);
 
-        List compressed = List();
+        List<int> compressed = List<int>();
 
         int output;
         while(true) {
@@ -91,7 +91,7 @@ class File {
     static void decompressFromFile(string sourceFileName, string destinationFileName) {
         ifstream nameFileout(sourceFileName, ifstream::in);
 
-        List compressed = List();
+        List<int> compressed = List<int>();
         string line;
         while (getline(nameFileout, line)) {
             compressed.push_back(stoi(line));
