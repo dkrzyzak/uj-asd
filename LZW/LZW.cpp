@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
-#include "Dict.hpp"
-#include "LZW.hpp"
+#include "FileOperations.hpp"
 
 using namespace std;
 
@@ -65,11 +64,11 @@ int runWithoutArgs() {
     int bufferSizeInBytes = bufferSizeInBits / 8;
 
     if (mode == 'c') {
-        LZWCompression::compressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
+        File::compressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
     } 
 
     if (mode == 'd') {
-        LZWCompression::decompressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
+        File::decompressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
     }
     
     return 0;
@@ -82,11 +81,11 @@ int runWithArgs(char const *argv[]) {
     int bufferSizeInBytes = atoi(argv[4]) / 8;
 
     if (mode == 'c') {
-        LZWCompression::compressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
+        File::compressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
     } 
 
     if (mode == 'd') {
-        LZWCompression::decompressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
+        File::decompressFromFile(sourceFilename, destinationFilename, bufferSizeInBytes);
     }
 
     return 0;

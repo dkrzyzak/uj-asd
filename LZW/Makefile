@@ -11,7 +11,7 @@ DIR = Zestaw07
 %.x: %.o
 	$(CO) $(CFLAGS) $^ -o $@
 
-%.o: %.cpp Dict.hpp LZW.hpp LinkedList.hpp
+%.o: %.cpp Dict.hpp LZW.hpp LinkedList.hpp FileOperations.hpp
 	$(CO) $(CFLAGS) -c $<
 
 all: LZW.x
