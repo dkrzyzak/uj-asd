@@ -47,23 +47,9 @@ class LZWCompression {
         outputStream.close();
     }
 
-    static void saveToFile(List& compressedList, string destinationFileName, int bufferSizeInBytes) {
-        ofstream outputStream(destinationFileName, ios::out | ios::binary);
-        
-        int value;
-        int listSize = compressedList.size();
-
-        for (int i = 0; i < listSize; i++) {
-            value = compressedList.pop_front();
-            outputStream.write(reinterpret_cast<const char* >(&value), bufferSizeInBytes);
-        }
-
-        outputStream.close();
-    }
-
     public:
 
-    static void compressFromFile(string sourceFileName, string destinationFileName, int bufferSizeInBytes) {
+    static void compressFromFile(string sourceFileName, string destinationFileName) {
         ifstream nameFileout(sourceFileName, ifstream::in);
         stringstream buffer;
 
@@ -71,30 +57,7 @@ class LZWCompression {
         string fileContent = buffer.str();
 
         List compressedList = compress(fileContent);
-        saveToFile(compressedList, destinationFileName, bufferSizeInBytes);
-
-        // odkomentuj żeby zapisać jako tekst
-        // saveToFile(compressedList, destinationFileName);
-    }
-
-    static void decompressFromFile(string sourceFileName, string destinationFileName, int bufferSizeInBytes) {
-        ifstream nameFileout(sourceFileName, ios::in | ios::binary);
-
-        List compressed = List();
-
-        int output;
-        while(true) {
-            nameFileout.read(reinterpret_cast< char* >(&output), bufferSizeInBytes);
-
-            if (nameFileout.eof()) {
-                break;
-            }
-
-            compressed.push_back(output);
-        }
-
-        string decompressedOutput = decompress(compressed);
-        saveToFile(decompressedOutput, destinationFileName);
+        saveToFile(compressedList, destinationFileName);
     }
 
     static void decompressFromFile(string sourceFileName, string destinationFileName) {

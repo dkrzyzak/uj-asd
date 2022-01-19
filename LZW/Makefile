@@ -16,14 +16,21 @@ DIR = Zestaw07
 
 all: LZW.x
 
-run: LZW.x
-	./LZW.x test.txt c compressed
-	./LZW.x compressed d decompressed
-	diff -s test.txt decompressed
-	ls -lh
+BUFFER_SIZE = 16
 
-cleanup:
-	rm compressed decompressed
+runText: LZW.x
+	./LZW.x test.txt c compressed.bin $(BUFFER_SIZE)
+	./LZW.x compressed.bin d decompressed.txt $(BUFFER_SIZE)
+	diff -s test.txt decompressed.txt
+	ls -lh
+	rm compressed.bin decompressed.txt
+
+runPicture: LZW.x
+	./LZW.x Wykres.png c Wykres-$(BUFFER_SIZE).bin $(BUFFER_SIZE)
+	./LZW.x Wykres-$(BUFFER_SIZE).bin d Wykres-decompressed-$(BUFFER_SIZE).png $(BUFFER_SIZE)
+	diff -s Wykres.png Wykres-decompressed-$(BUFFER_SIZE).png
+	ls -lh
+	rm Wykres-*
 
 clean:
 	rm -f *.x *.out *.o *.lzw
