@@ -1,6 +1,6 @@
 CO = g++
 CFLAGS = -std=c++11 -Wall
-DIR = Zestaw07
+DIR = LZW
 
 .PHONY: all clean tar
 
@@ -16,24 +16,34 @@ DIR = Zestaw07
 
 all: LZW.x
 
-BUFFER_SIZE = 16
+# Poniżej znajdują się komendy używane do testowania poprawności programu LZW.x
+# rozmiar bufora w bajtach
+BUFFER_SIZE = 2
+
+# Testowanie kompresji plików tekstowych
+TEXT_FILE_NAME = test.txt
 
 runText: LZW.x
-	./LZW.x test.txt c compressed.bin $(BUFFER_SIZE)
+	./LZW.x $(TEXT_FILE_NAME) c compressed.bin $(BUFFER_SIZE)
 	./LZW.x compressed.bin d decompressed.txt $(BUFFER_SIZE)
-	diff -s test.txt decompressed.txt
+	diff -s $(TEXT_FILE_NAME) decompressed.txt
 	ls -lh
 	rm compressed.bin decompressed.txt
 
+
+# Testowanie kompresji plików graficznych
+PIC_NAME = image
+PIC_EXT = jpeg
+
 runPicture: LZW.x
-	./LZW.x Wykres.png c Wykres-$(BUFFER_SIZE).bin $(BUFFER_SIZE)
-	./LZW.x Wykres-$(BUFFER_SIZE).bin d Wykres-decompressed-$(BUFFER_SIZE).png $(BUFFER_SIZE)
-	diff -s Wykres.png Wykres-decompressed-$(BUFFER_SIZE).png
+	./LZW.x $(PIC_NAME).$(PIC_EXT) c $(PIC_NAME)-$(BUFFER_SIZE).bin $(BUFFER_SIZE)
+	./LZW.x $(PIC_NAME)-$(BUFFER_SIZE).bin d $(PIC_NAME)-decompressed-$(BUFFER_SIZE).$(PIC_EXT) $(BUFFER_SIZE)
+	diff -s $(PIC_NAME).$(PIC_EXT) $(PIC_NAME)-decompressed-$(BUFFER_SIZE).$(PIC_EXT)
 	ls -lh
-	rm Wykres-*
+	rm $(PIC_NAME)-*
 
 clean:
-	rm -f *.x *.out *.o *.lzw
+	rm -f *.x *.out *.o *.lzw *.bin
 
 tar: clean
-	cd ../; tar -cvzf Daniel_Krzyzak_$(DIR).tar.gz $(DIR)
+	cd ../; tar -cvzf Daniel_Krzyzak_Projekt_$(DIR).tar.gz $(DIR)
