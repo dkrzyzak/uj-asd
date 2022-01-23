@@ -19,8 +19,7 @@ int main(int argc, char const *argv[]) {
         string key, value;
         ss >> key >> value;
 
-        pair<string, string> p(key, value);
-        d.insert(p);
+        d[key] = value;
     }
 
     string key;

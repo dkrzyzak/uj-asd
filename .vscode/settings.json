@@ -21,6 +21,12 @@
         "sstream": "cpp",
         "type_traits": "cpp",
         "iosfwd": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__hash_table": "cpp",
+        "bitset": "cpp",
+        "iterator": "cpp",
+        "stack": "cpp",
+        "unordered_map": "cpp",
+        "utility": "cpp"
     }
 }

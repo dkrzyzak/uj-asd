@@ -2,9 +2,9 @@
 #define DICTIONARY
 
 #include <iostream>
-#include <list>
 #include <cstring>
-#include <unordered_map> // żeby uzyskać funkcję hashującą
+#include <unordered_map> // żeby uzyskać funkcję hashującą dowolny typ danych
+#include "LinkedList.hpp"
 
 using namespace std;
 
@@ -13,7 +13,7 @@ class Dict {
     using Pair = pair<K, V>;
     private:
     const static int hashGroups = 1000;
-    list<Pair> table[hashGroups];
+    List<Pair> table[hashGroups];
     hash<K> hasher;
 
     int hashFunction(const K& key, int hashTableSize = hashGroups) {
@@ -33,35 +33,33 @@ class Dict {
     // Czyści słownik
     void clear() {
         for (int i = 0; i < hashGroups; i++) {
-            list<Pair>& cell = table[i];
+            List<Pair>& cell = table[i];
             cell.clear();
         }
-    
+
     };
 
     // Dodaje parę klucz-wartość do słownika
     bool insert(const Pair& p) {
         int hashValue = hashFunction(p.first);
-        list<Pair>& cell = table[hashValue];
+        List<Pair>& cell = table[hashValue];
         
         bool keyExists = false;
-        for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
-            if (bIterator->first == p.first) {
+        
+        auto el = cell.guard.next;
+        for (int i = 0; i < cell.size(); i++) {
+            if (el->x.first == p.first) {
                 keyExists = true;
-                bIterator->second = p.second;
+                el->x.second = p.second;
                 break;
             }
+            el = el->next;
         }
 
         if (!keyExists) {
-            cell.emplace_back(p.first, p.second);
+            Pair newPair(p.first, p.second);
+            cell.push_back(newPair);
         }
-
-        // double loadFactor = (double)size() / (double)hashGroups;
-        // cout << "load factor: " << loadFactor << endl;
-        // if (loadFactor > 0.75) {
-        //     resize();
-        // }
 
         return keyExists;
     }; 
@@ -69,12 +67,15 @@ class Dict {
     // Sprawdza czy słownik zawiera klucz
     bool find(const K& k) {
         int hashValue = hashFunction(k);
-        list<Pair>& cell = table[hashValue];
-      
-        for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
-            if (bIterator->first == k) {
+        List<Pair>& cell = table[hashValue];
+
+        auto el = cell.guard.next;
+        for (int i = 0; i < cell.size(); i++) {
+            if (el->x.first == k) {
                 return true;
             }
+
+            el = el->next;
         }
 
         return false;
@@ -83,29 +84,36 @@ class Dict {
     // Zwraca wartość dla klucza
     V& operator[](const K& k) {
         int hashValue = hashFunction(k);
-        list<Pair>& cell = table[hashValue];
-      
-        for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
-            if (bIterator->first == k) {
-                return bIterator->second;
+        List<Pair>& cell = table[hashValue];
+
+        auto el = cell.guard.next;
+        for (int i = 0; i < cell.size(); i++) {
+            if (el->x.first == k) {
+                return el->x.second;
             }
+
+            el = el->next;
         }
-        
-        cell.emplace_back(k, V());
+
+        Pair newPair(k, V());
+        cell.push_back(newPair);
+
         return cell.back().second;
     }
 
     // Usuwa parę od danym kluczu
     bool erase(const K& k) {
         int hashValue = hashFunction(k);
-        auto& cell = table[hashValue];
-        
-        for (auto bIterator = begin(cell); bIterator != end(cell); bIterator++) {
-            if (bIterator->first == k) {
-                bIterator = cell.erase(bIterator);
-                // cout << "Pair removed" << endl;
+        List<Pair>& cell = table[hashValue];
+
+        auto el = cell.guard.next;
+        for (int i = 0; i < cell.size(); i++) {
+            if (el->x.first == k) {
+                cell.erase(i);
                 return true;
             }
+
+            el = el->next;
         }
 
         return false;

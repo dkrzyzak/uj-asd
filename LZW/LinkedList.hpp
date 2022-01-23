@@ -20,10 +20,11 @@ private:
         Node(T x): x(x) {};
     };
 
-    Node guard;
     unsigned int listSize;
 
 public:
+    Node guard;
+
     List() {
         guard.next = NULL;
         guard.prev = NULL;
@@ -234,6 +235,10 @@ public:
         }
 
         return xCount;
+    }
+
+    T& back() {
+        return guard.prev->x;
     }
 
     string print() {
