@@ -46,7 +46,7 @@ class Dict {
         
         bool keyExists = false;
         
-        auto el = cell.guard.next;
+        auto el = cell.head.next;
         for (int i = 0; i < cell.size(); i++) {
             if (el->x.first == p.first) {
                 keyExists = true;
@@ -69,7 +69,7 @@ class Dict {
         int hashValue = hashFunction(k);
         List<Pair>& cell = table[hashValue];
 
-        auto el = cell.guard.next;
+        auto el = cell.head.next;
         for (int i = 0; i < cell.size(); i++) {
             if (el->x.first == k) {
                 return true;
@@ -86,7 +86,7 @@ class Dict {
         int hashValue = hashFunction(k);
         List<Pair>& cell = table[hashValue];
 
-        auto el = cell.guard.next;
+        auto el = cell.head.next;
         for (int i = 0; i < cell.size(); i++) {
             if (el->x.first == k) {
                 return el->x.second;
@@ -106,7 +106,7 @@ class Dict {
         int hashValue = hashFunction(k);
         List<Pair>& cell = table[hashValue];
 
-        auto el = cell.guard.next;
+        auto el = cell.head.next;
         for (int i = 0; i < cell.size(); i++) {
             if (el->x.first == k) {
                 cell.erase(i);

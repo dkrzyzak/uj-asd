@@ -23,11 +23,11 @@ private:
     unsigned int listSize;
 
 public:
-    Node guard;
+    Node head;
 
     List() {
-        guard.next = NULL;
-        guard.prev = NULL;
+        head.next = NULL;
+        head.prev = NULL;
         listSize = 0;
     }
 
@@ -36,18 +36,18 @@ public:
         auto newNode = new Node(x);
 
         // pusta lista
-        if (guard.next == NULL) {
-            guard.next = newNode;
-            guard.prev = newNode;
+        if (head.next == NULL) {
+            head.next = newNode;
+            head.prev = newNode;
 
-            newNode->prev = &guard;
-            newNode->next = &guard;
+            newNode->prev = &head;
+            newNode->next = &head;
         } else {
-            guard.next->prev = newNode;
-            newNode->next = guard.next;
+            head.next->prev = newNode;
+            newNode->next = head.next;
 
-            newNode->prev = &guard;
-            guard.next = newNode;
+            newNode->prev = &head;
+            head.next = newNode;
         }
 
         listSize++;
@@ -56,21 +56,21 @@ public:
     // Usuwa i zwraca element z początku listy
     T pop_front() {
         // pusta lista 
-        if (guard.next == NULL) {
+        if (head.next == NULL) {
             throw out_of_range("EMPTY");
         }
 
-        T x = guard.next->x;
+        T x = head.next->x;
 
         // jeden element na liście
-        if (guard.next == guard.prev) {
-            free(guard.next);
-            guard.next = NULL;
-            guard.prev = NULL;
+        if (head.next == head.prev) {
+            free(head.next);
+            head.next = NULL;
+            head.prev = NULL;
         } else {
             // więcej elementow na liście
-            Node* nodeToRemove = guard.next;
-            guard.next = guard.next->next;
+            Node* nodeToRemove = head.next;
+            head.next = head.next->next;
             delete nodeToRemove;
         }
 
@@ -83,20 +83,20 @@ public:
         auto newNode = new Node(x);
 
         // pusta lista
-        if (guard.prev == NULL) {
-            guard.next = newNode;
-            guard.prev = newNode;
+        if (head.prev == NULL) {
+            head.next = newNode;
+            head.prev = newNode;
 
-            newNode->prev = &guard;
-            newNode->next = &guard;
+            newNode->prev = &head;
+            newNode->next = &head;
         } else {
             // wstawiamy za ostatni element
-            guard.prev->next = newNode;
-            newNode->prev = guard.prev;
+            head.prev->next = newNode;
+            newNode->prev = head.prev;
 
             // przepinamy końcowki
-            newNode->next = &guard;
-            guard.prev = newNode;
+            newNode->next = &head;
+            head.prev = newNode;
         }
 
         listSize++;
@@ -109,17 +109,17 @@ public:
             throw out_of_range("EMPTY");
         }
 
-        T x = guard.prev->x;
+        T x = head.prev->x;
 
         // jeden element na liście
-        if (guard.next == guard.prev) {
-            free(guard.prev);
-            guard.next = NULL;
-            guard.prev = NULL;
+        if (head.next == head.prev) {
+            free(head.prev);
+            head.next = NULL;
+            head.prev = NULL;
         } else {
             // więcej elementow na liście
-            Node* nodeToRemove = guard.prev;
-            guard.prev = guard.prev->prev;
+            Node* nodeToRemove = head.prev;
+            head.prev = head.prev->prev;
             delete nodeToRemove;
         }
 
@@ -130,7 +130,7 @@ public:
     T operator[](const int index) {
         int i = 0;
 
-        Node* el = guard.next;
+        Node* el = head.next;
         while (i != index) {
             el = el->next;
             i++;
@@ -151,15 +151,15 @@ public:
 
     // Czyści listę
     void clear() {
-        Node* el = guard.next;
+        Node* el = head.next;
 
         for (int i = 0; i < listSize; i++) {
             el = el->next;
             delete el->prev;
         }
 
-        guard.next = NULL;
-        guard.prev = NULL;
+        head.next = NULL;
+        head.prev = NULL;
     }
 
     // Zwraca pozycje pierwszego elementu o wartości x
@@ -168,7 +168,7 @@ public:
             return -1;
         }
 
-        Node* el = guard.next;
+        Node* el = head.next;
         for (int i = 0; i < listSize; i++) {
             if (el->x == x) {
                 return i;
@@ -189,7 +189,7 @@ public:
         Node* el;
         for (int index = 0; index <= i; index++) {
             if (index == 0) {
-                el = guard.next;
+                el = head.next;
             } else {
             el = el->next;
             }
@@ -209,7 +209,7 @@ public:
         Node* el;
         for (int index = 0; index <= i; index++) {
             if (index == 0) {
-                el = guard.next;
+                el = head.next;
             } else {
                 el = el->next;
             }
@@ -238,12 +238,12 @@ public:
     }
 
     T& back() {
-        return guard.prev->x;
+        return head.prev->x;
     }
 
     string print() {
         stringstream ss;
-        Node* el = guard.next;
+        Node* el = head.next;
         for (int i = 0; i < listSize; i++) {
             ss << el->x << endl;
             el = el->next;
