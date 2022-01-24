@@ -17,6 +17,8 @@ Prepare() {
 FindLua() {
 	if ! command -v lua &> /dev/null; then
 		Error "lua could not be found"
+	elif lua -v | grep -q "^Lua 5.2"; then
+		Tester="lua data/tester_lua52.luac"
 	elif lua -v | grep -q "^Lua 5.3"; then
 		Tester="lua data/tester_lua53.luac"
 	elif lua -v | grep -q "^Lua 5.4"; then
@@ -34,7 +36,7 @@ Build() {
 }
 
 Test() {
-	${Tester} ${Set} "$1" "$2" "$3"
+	${Tester} ${Set} "$@"
 	read
 }
 
