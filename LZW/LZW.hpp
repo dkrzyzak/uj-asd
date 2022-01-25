@@ -1,10 +1,11 @@
 #ifndef LZWCOMPRESSION
 #define LZWCOMPRESSION
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <sstream>
 #include <string>
+
 #include "Dict.hpp"
 #include "LinkedList.hpp"
 
@@ -17,8 +18,7 @@ class LZWCompression {
     using DecompressDict = Dict<int, string>;
     using DecompressPair = pair<int, string>;
 
-    private:
-
+   private:
     static void fillDictWithAsciiChars(CompressDict* dict) {
         for (int i = 0; i <= 255; i++) {
             string ch = string(1, char(i));
@@ -33,8 +33,7 @@ class LZWCompression {
         }
     }
 
-    public:
-
+   public:
     static List<int> compress(string input) {
         auto dict = CompressDict();
         fillDictWithAsciiChars(&dict);
@@ -71,29 +70,29 @@ class LZWCompression {
         auto dict = DecompressDict();
         fillDictWithAsciiChars(&dict);
 
-        int old = compressed[0];
-        int n;
-        string s = dict[old];
-        string c = string(1, s[0]);
-        string output = s;
+        int oldInputCode = compressed[0];
+        int newInputCode;
+        string translationOfCurrentInputCode = dict[oldInputCode];
+        string firstChar = string(1, translationOfCurrentInputCode[0]);
+        string output = translationOfCurrentInputCode;
 
         int count = 256;
         int compressedListSize = compressed.size();
         for (int i = 0; i < compressedListSize - 1; i++) {
-            n = compressed[i + 1];
+            newInputCode = compressed[i + 1];
 
-            if (!dict.find(n)) {
-                s = dict[old];
-                s = s + c;
+            if (!dict.find(newInputCode)) {
+                translationOfCurrentInputCode = dict[oldInputCode];
+                translationOfCurrentInputCode = translationOfCurrentInputCode + firstChar;
             } else {
-                s = dict[n];
+                translationOfCurrentInputCode = dict[newInputCode];
             }
 
-            output += s;
-            c = string(1, s[0]);
-            dict.insert(DecompressPair(count, dict[old] + c));
+            output += translationOfCurrentInputCode;
+            firstChar = string(1, translationOfCurrentInputCode[0]);
+            dict.insert(DecompressPair(count, dict[oldInputCode] + firstChar));
             count++;
-            old = n;
+            oldInputCode = newInputCode;
         }
 
         return output;
