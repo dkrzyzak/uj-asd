@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <unordered_map> // żeby uzyskać funkcję hashującą dowolny typ danych
 #include "LinkedList.hpp"
 
 using namespace std;
@@ -12,18 +11,24 @@ template<class K, class V>
 class Dict {
     using Pair = pair<K, V>;
     private:
-    const static int hashGroups = 1000;
+    const static int hashGroups = 1009;
     List<Pair> table[hashGroups];
-    hash<K> hasher;
 
-    int hashFunction(const K& key, int hashTableSize = hashGroups) {
-        return hasher(key) % hashTableSize;
+    unsigned int generateHash(const string& key) {
+        unsigned int hash = 1;
+        int prime = 31;
+
+        for (const char& s : key) {
+            hash = ((hash + (int)s) * prime) % hashGroups;
+        }
+
+        return hash;
     }
 
     public:
     // Konstruktor
     Dict() {
-
+        
     };
 
     ~Dict() {
@@ -41,7 +46,7 @@ class Dict {
 
     // Dodaje parę klucz-wartość do słownika
     bool insert(const Pair& p) {
-        int hashValue = hashFunction(p.first);
+        int hashValue = generateHash(p.first);
         List<Pair>& cell = table[hashValue];
         
         bool keyExists = false;
@@ -65,8 +70,11 @@ class Dict {
     }; 
 
     // Sprawdza czy słownik zawiera klucz
-    bool find(const K& k) {
-        int hashValue = hashFunction(k);
+    bool find(const K& k, int hashValue = 0) {
+        if (hashValue == 0) {
+            hashValue = generateHash(k);
+        }
+
         List<Pair>& cell = table[hashValue];
 
         auto el = cell.head.next;
@@ -83,7 +91,7 @@ class Dict {
 
     // Zwraca wartość dla klucza
     V& operator[](const K& k) {
-        int hashValue = hashFunction(k);
+        int hashValue = generateHash(k);
         List<Pair>& cell = table[hashValue];
 
         auto el = cell.head.next;
@@ -103,7 +111,7 @@ class Dict {
 
     // Usuwa parę od danym kluczu
     bool erase(const K& k) {
-        int hashValue = hashFunction(k);
+        int hashValue = generateHash(k);
         List<Pair>& cell = table[hashValue];
 
         auto el = cell.head.next;
