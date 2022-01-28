@@ -14,7 +14,7 @@ class Dict {
     const static int hashGroups = 1009;
     List<Pair> table[hashGroups];
 
-    unsigned int generateHash(const string& key) {
+    unsigned int generateHash(const K& key) {
         unsigned int hash = 1;
         int prime = 31;
 
